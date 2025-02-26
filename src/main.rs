@@ -29,6 +29,9 @@ use bevy::prelude::*;
 use lib::ExampleCommonPlugin;
 use plugin::*;
 
+#[derive(Debug, Component)]
+struct Player;
+
 fn main() {
     App::new()
         .add_plugins((
@@ -48,13 +51,16 @@ fn setup(
     assets: Res<AssetServer>,
 ) {
     // Player
-    commands.spawn((
-        Mesh3d(meshes.add(Capsule3d::new(0.4, 1.0))),
-        MeshMaterial3d(materials.add(Color::srgb(0.8, 0.7, 0.6))),
-        Transform::from_xyz(0.0, 1.5, 0.0),
-        CharacterControllerBundle::new(Collider::capsule(0.4, 1.0), Vector::NEG_Y * 9.81 * 2.0)
-            .with_movement(30.0, 0.92, 7.0, (30.0 as Scalar).to_radians()),
-    ));
+    let player = commands
+        .spawn((
+            Player,
+            Mesh3d(meshes.add(Capsule3d::new(0.4, 1.0))),
+            MeshMaterial3d(materials.add(Color::srgb(0.8, 0.7, 0.6))),
+            Transform::from_xyz(0.0, 1.5, 0.0),
+            CharacterControllerBundle::new(Collider::capsule(0.4, 1.0), Vector::NEG_Y * 9.81 * 2.0)
+                .with_movement(30.0, 0.92, 7.0, (30.0 as Scalar).to_radians()),
+        ))
+        .id();
 
     // A cube to move around
     commands.spawn((
@@ -84,9 +90,23 @@ fn setup(
         Transform::from_xyz(0.0, 15.0, 0.0),
     ));
 
+    let fov = 106.0_f32.to_radians();
     // Camera
-    commands.spawn((
-        Camera3d::default(),
-        Transform::from_xyz(-7.0, 9.5, 15.0).looking_at(Vec3::ZERO, Vec3::Y),
-    ));
+    let camera = commands
+        .spawn((
+            Camera3d::default(),
+            Camera {
+                // Bump the order to render on top of the world model.
+                order: 1,
+                ..default()
+            },
+            Projection::from(PerspectiveProjection {
+                fov: fov,
+                ..default()
+            }),
+        ))
+        .id();
+
+    commands.entity(camera);
+    commands.entity(player).add_child(camera);
 }
