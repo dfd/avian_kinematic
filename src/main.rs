@@ -39,7 +39,6 @@ fn main() {
             ExampleCommonPlugin,
             PhysicsPlugins::default(),
             CharacterControllerPlugin,
-            CameraControllerPlugin,
         ))
         .add_systems(Startup, setup)
         .run();
