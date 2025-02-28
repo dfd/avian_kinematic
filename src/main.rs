@@ -21,6 +21,7 @@
 //! or use an existing third party character controller plugin like Bevy Tnua
 //! (a dynamic character controller).
 
+mod camera_controller;
 mod lib;
 mod plugin;
 
@@ -41,6 +42,7 @@ fn main() {
             CharacterControllerPlugin,
         ))
         .add_systems(Startup, setup)
+        .add_systems(Update, camera_controller::update_camera_controller)
         .run();
 }
 
@@ -104,6 +106,11 @@ fn setup(
                 fov: fov,
                 ..default()
             }),
+            camera_controller::CameraController {
+                sensitivity: 0.035,
+                rotation: Vec2::ZERO,
+                rotation_lock: 88.0,
+            },
         ))
         .id();
 
