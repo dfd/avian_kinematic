@@ -1,3 +1,4 @@
+use super::camera_controller::CameraController;
 use avian3d::{math::*, prelude::*};
 use bevy::{ecs::query::Has, math::*, prelude::*};
 
@@ -229,9 +230,11 @@ fn movement(
         &mut LinearVelocity,
         Has<Grounded>,
     )>,
+    camera_query: Query<&CameraController>,
 ) {
     // Precision is adjusted so that the example works with
     // both the `f32` and `f64` features. Otherwise you don't need this.
+    let camera = camera_query.get_single().unwrap();
     let delta_time = time.delta_secs_f64().adjust_precision();
 
     for event in movement_event_reader.read() {
@@ -240,8 +243,27 @@ fn movement(
         {
             match event {
                 MovementAction::Move(direction) => {
-                    linear_velocity.x += direction.x * movement_acceleration.0 * delta_time;
-                    linear_velocity.z -= direction.y * movement_acceleration.0 * delta_time;
+                    let camera_rotation_converted =
+                        -camera.rotation.y.to_radians() - 90.0_f32.to_radians();
+                    let forward = Vec2::new(
+                        -f32::sin(camera_rotation_converted),
+                        -f32::cos(camera_rotation_converted),
+                    );
+
+                    let right = Vec2::new(-forward.y, forward.x);
+                    //let right = Vec2::new(-forward.y, -forward.x);
+                    //let right = Vec2::new(forward.x, forward.y);
+
+                    if let Some(movement_direction) =
+                        (forward * direction.x * delta_time + right * direction.y).try_normalize()
+                    {
+                        linear_velocity.x +=
+                            movement_direction.x * movement_acceleration.0 * delta_time;
+                        linear_velocity.z -=
+                            movement_direction.y * movement_acceleration.0 * delta_time;
+                        //linear_velocity.x += direction.x * movement_acceleration.0 * delta_time;
+                        //linear_velocity.z -= direction.y * movement_acceleration.0 * delta_time;
+                    }
                 }
                 MovementAction::Jump => {
                     if is_grounded {
