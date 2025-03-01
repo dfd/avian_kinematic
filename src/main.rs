@@ -107,7 +107,8 @@ fn setup(
                 ..default()
             }),
             camera_controller::CameraController {
-                sensitivity: 0.035,
+                //sensitivity: 0.035,
+                sensitivity: 0.05,
                 rotation: Vec2::ZERO,
                 rotation_lock: 88.0,
             },
