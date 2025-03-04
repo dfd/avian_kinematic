@@ -255,7 +255,7 @@ fn movement(
                     //let right = Vec2::new(forward.x, forward.y);
 
                     if let Some(movement_direction) =
-                        (forward * direction.x * delta_time + right * direction.y).try_normalize()
+                        (forward * direction.x + right * direction.y).try_normalize()
                     {
                         linear_velocity.x +=
                             movement_direction.x * movement_acceleration.0 * delta_time;
