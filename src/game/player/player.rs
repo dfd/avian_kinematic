@@ -33,8 +33,8 @@ fn init_player(
         ))
         .id();
 
-    let fov = 106.0_f32.to_radians();
-    // Camera
+    let fov = 90.0_f32.to_radians(); //106.0_f32.to_radians();
+                                     // Camera
     let camera = commands
         .spawn((
             Camera3d::default(),

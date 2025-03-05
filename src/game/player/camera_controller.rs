@@ -64,7 +64,7 @@ fn gamepad_input(mut movement_event_writer: EventWriter<CameraAction>, gamepads:
             gamepad.get(GamepadAxis::RightStickY),
         ) {
             movement_event_writer.send(CameraAction::Move(
-                Vector2::new(x as Scalar, y as Scalar).clamp_length_max(1.0),
+                Vector2::new(x * 4.0 as Scalar, y * 4.0 as Scalar).clamp_length_max(1.0),
             ));
         }
     }
@@ -77,8 +77,11 @@ fn mouse_input(
     for ev in mouse_motion.read() {
         let x = ev.delta.x * 0.05;
         let y = ev.delta.y * 0.05;
-        movement_event_writer.send(CameraAction::Move(
-            Vector2::new(x as Scalar, y as Scalar).clamp_length_max(1.0),
-        ));
+        // Only send the event if either axis is above 0.1 in absolute value
+        if x.abs() > 0.1 || y.abs() > 0.1 {
+            movement_event_writer.send(CameraAction::Move(
+                Vector2::new(x as Scalar, y as Scalar).clamp_length_max(1.0),
+            ));
+        }
     }
 }

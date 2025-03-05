@@ -182,9 +182,11 @@ fn gamepad_input(
             gamepad.get(GamepadAxis::LeftStickX),
             gamepad.get(GamepadAxis::LeftStickY),
         ) {
-            movement_event_writer.send(MovementAction::Move(
-                Vector2::new(x as Scalar, y as Scalar).clamp_length_max(1.0),
-            ));
+            if x.abs() > 0.1 || y.abs() > 0.1 {
+                movement_event_writer.send(MovementAction::Move(
+                    Vector2::new(x as Scalar, y as Scalar).clamp_length_max(1.0),
+                ));
+            }
         }
 
         if gamepad.just_pressed(GamepadButton::South) {
