@@ -1,13 +1,13 @@
 use avian3d::{math::*, prelude::*};
 use bevy::prelude::*;
 
-use super::{camera_controller, character_controller::*};
+use super::{camera_controller, camera_controller::*, character_controller::*};
 pub struct PlayerPlugin;
 
 impl Plugin for PlayerPlugin {
     fn build(&self, app: &mut App) {
-        app.add_plugins((CharacterControllerPlugin,))
-            .add_systems(Update, (camera_controller::update_camera_controller,))
+        app.add_plugins((CharacterControllerPlugin, CameraControllerPlugin))
+            //.add_systems(Update, (camera_controller::update_camera_controller,))
             //physics timestep
             .add_systems(Startup, init_player);
     }
