@@ -3,20 +3,12 @@ use bevy::{input::mouse::MouseMotion, prelude::*};
 
 pub struct CameraControllerPlugin;
 
-/*impl Plugin for CameraControllerPlugin {
+impl Plugin for CameraControllerPlugin {
     fn build(&self, app: &mut App) {
         app.add_event::<CameraAction>().add_systems(
             Update,
             (mouse_input, gamepad_input, update_camera_controller).chain(),
         );
-    }
-}*/
-impl Plugin for CameraControllerPlugin {
-    fn build(&self, app: &mut App) {
-        app.add_event::<CameraAction>();
-        app.add_systems(Update, mouse_input);
-        app.add_systems(Update, gamepad_input);
-        app.add_systems(Update, update_camera_controller);
     }
 }
 
