@@ -67,7 +67,7 @@ fn mouse_input(
     mut movement_event_writer: EventWriter<CameraAction>,
 ) {
     for ev in mouse_motion.read() {
-        let x = ev.delta.x * 0.05;
+        let x = ev.delta.x * 0.05; // sensitivity
         let y = ev.delta.y * 0.05;
         // Only send the event if either axis is above 0.1 in absolute value
         if x.abs() > 0.1 || y.abs() > 0.1 {
