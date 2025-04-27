@@ -20,7 +20,7 @@ fn init_player(
     mut commands: Commands,
     mut meshes: ResMut<Assets<Mesh>>,
     mut materials: ResMut<Assets<StandardMaterial>>,
-    assets: Res<AssetServer>,
+    //assets: Res<AssetServer>,
 ) {
     let player = commands
         .spawn((

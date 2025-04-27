@@ -1,7 +1,5 @@
-use bevy::prelude::*;
-use std::f32::consts::PI;
-
 use avian3d::prelude::*;
+use bevy::prelude::*;
 
 pub struct LevelPlugin;
 impl Plugin for LevelPlugin {

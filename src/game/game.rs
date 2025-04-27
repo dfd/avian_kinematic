@@ -1,4 +1,4 @@
-use avian3d::{math::*, prelude::*};
+use avian3d::prelude::*;
 use bevy::prelude::*;
 
 use super::{level::level, player::player, window::window};
