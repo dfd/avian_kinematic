@@ -28,7 +28,7 @@ pub fn update_camera_controller(
     mut camera_action_reader: EventReader<CameraAction>,
     mut camera_query: Query<(&mut CameraController, &mut Transform)>,
 ) {
-    if let Ok((mut camera_controller, mut transform)) = camera_query.get_single_mut() {
+    if let Ok((mut camera_controller, mut transform)) = camera_query.single_mut() {
         for ev in camera_action_reader.read() {
             match ev {
                 CameraAction::Move(direction) => {
@@ -55,9 +55,11 @@ fn gamepad_input(mut movement_event_writer: EventWriter<CameraAction>, gamepads:
             gamepad.get(GamepadAxis::RightStickX),
             gamepad.get(GamepadAxis::RightStickY),
         ) {
-            movement_event_writer.send(CameraAction::Move(
-                Vector2::new(x * 4.0 as Scalar, y * 4.0 as Scalar).clamp_length_max(1.0),
-            ));
+            if x.abs() > 0.1 || y.abs() > 0.1 {
+                movement_event_writer.write(CameraAction::Move(
+                    Vector2::new(x * 4.0 as Scalar, y * 4.0 as Scalar).clamp_length_max(1.0),
+                ));
+            }
         }
     }
 }
@@ -71,7 +73,7 @@ fn mouse_input(
         let y = ev.delta.y * 0.05;
         // Only send the event if either axis is above 0.1 in absolute value
         if x.abs() > 0.1 || y.abs() > 0.1 {
-            movement_event_writer.send(CameraAction::Move(
+            movement_event_writer.write(CameraAction::Move(
                 Vector2::new(x as Scalar, y as Scalar).clamp_length_max(1.0),
             ));
         }

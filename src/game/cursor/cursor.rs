@@ -37,7 +37,7 @@ fn init_cursor_properties(
     mut window_query: Query<&mut Window, With<PrimaryWindow>>,
     mut cursor: ResMut<Cursor>,
 ) {
-    let mut window = window_query.get_single_mut().unwrap();
+    let mut window = window_query.single_mut().unwrap();
     cursor.invert_lock(&mut window);
 }
 
@@ -46,7 +46,7 @@ fn update_cursor_locking(
     mut window_query: Query<&mut Window, With<PrimaryWindow>>,
     mut cursor: ResMut<Cursor>,
 ) {
-    let mut window = window_query.get_single_mut().unwrap();
+    let mut window = window_query.single_mut().unwrap();
     if keys.just_pressed(KeyCode::Escape) {
         cursor.invert_lock(&mut window);
     }
