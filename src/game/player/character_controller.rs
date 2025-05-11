@@ -253,8 +253,6 @@ fn movement(
                     );
 
                     let right = Vec2::new(-forward.y, forward.x);
-                    //let right = Vec2::new(-forward.y, -forward.x);
-                    //let right = Vec2::new(forward.x, forward.y);
 
                     if let Some(movement_direction) =
                         (forward * direction.x + right * direction.y).try_normalize()
