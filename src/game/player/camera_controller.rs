@@ -57,7 +57,7 @@ fn gamepad_input(mut movement_event_writer: EventWriter<CameraAction>, gamepads:
         ) {
             if x.abs() > 0.1 || y.abs() > 0.1 {
                 movement_event_writer.write(CameraAction::Move(
-                    Vector2::new(x * 4.0 as Scalar, y * 4.0 as Scalar).clamp_length_max(1.0),
+                    Vector2::new(x * 4.0 as Scalar, y * 4.0 as Scalar).clamp_length_max(2.0),
                 ));
             }
         }
